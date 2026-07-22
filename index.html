@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<title>Pagamento Pix</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #f5f5f5;
+  text-align: center;
+  padding: 20px;
+}
+
+.box {
+  background: white;
+  padding: 20px;
+  border-radius: 10px;
+  max-width: 400px;
+  margin: auto;
+}
+
+h2 {
+  color: #ff6600;
+}
+
+.qr {
+  margin: 20px 0;
+}
+
+button {
+  background: #00a884;
+  color: white;
+  border: none;
+  padding: 15px;
+  font-size: 16px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+</style>
+
+</head>
+<body>
+
+<div class="box">
+
+  <h2 id="valor">R$ 0,00</h2>
+
+  <div class="qr">
+    <img id="qrcode" width="200">
+  </div>
+
+  <button onclick="copiar()">📋 Copiar código do Pix</button>
+
+</div>
+
+<script>
+
+// pega parâmetros da URL
+const params = new URLSearchParams(window.location.search);
+const pix = params.get("pix");
+const valor = params.get("valor");
+
+// mostra valor
+document.getElementById("valor").innerText = "R$ " + (valor || "0,00");
+
+// gera QR code automaticamente
+document.getElementById("qrcode").src =
+  "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + encodeURIComponent(pix);
+
+// copiar código
+function copiar() {
+  navigator.clipboard.writeText(pix);
+  alert("Código Pix copiado!");
+}
+
+</script>
+
+</body>
+</html>
