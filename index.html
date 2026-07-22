@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Pagamento via PIX</title>
 
-  <!-- Biblioteca QR Code -->
+  <!-- QRCode -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
@@ -16,56 +16,39 @@
     }
 
     .container {
-      background: #ffffff;
+      background: #fff;
       max-width: 400px;
       margin: auto;
       padding: 25px;
-      border-radius: 12px;
-      box-shadow: 0 0 12px rgba(0,0,0,0.1);
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.1);
     }
 
+    /* 🔥 LOGO PEQUENA */
     .logo {
-      width: 50px;
+      width: 70px;
       height: auto;
       display: block;
       margin: 0 auto 15px;
     }
 
-    h2 {
-      margin-bottom: 10px;
-      color: #333;
-    }
-
-    p {
-      color: #666;
-      font-size: 14px;
-    }
-
     textarea {
       width: 100%;
       height: 80px;
-      margin-top: 12px;
-      font-size: 12px;
+      margin-top: 10px;
       padding: 10px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      resize: none;
+      font-size: 12px;
     }
 
     button {
-      margin-top: 12px;
+      margin-top: 10px;
       padding: 12px;
       width: 100%;
       background: #00a650;
-      color: white;
+      color: #fff;
       border: none;
-      border-radius: 6px;
-      font-size: 14px;
+      border-radius: 5px;
       cursor: pointer;
-    }
-
-    button:hover {
-      background: #008f45;
     }
 
     #qrcode {
@@ -78,11 +61,11 @@
 
 <div class="container">
 
-  <!-- 🔥 SUA IMAGEM -->
+  <!-- SUA LOGO -->
   <img src="https://raw.githubusercontent.com/renascerassociados-afk/pix/refs/heads/main/logo%20sf.png" class="logo">
 
   <h2>Pagamento via PIX</h2>
-  <p>Copie o código ou escaneie o QR Code</p>
+  <p>Copie ou escaneie o QR Code</p>
 
   <textarea id="pixCode" readonly></textarea>
 
@@ -93,30 +76,29 @@
 </div>
 
 <script>
-  function getPixFromURL() {
-    const params = new URLSearchParams(window.location.search);
-    return params.get("pix");
-  }
+  const params = new URLSearchParams(window.location.search);
+  const pix = params.get("pix");
 
-  const pix = getPixFromURL();
+  const campo = document.getElementById("pixCode");
 
   if (pix) {
-    document.getElementById("pixCode").value = pix;
+    campo.value = pix;
 
+    // 🔥 GERA QR CODE
     new QRCode(document.getElementById("qrcode"), {
       text: pix,
       width: 200,
       height: 200
     });
+
   } else {
-    document.getElementById("pixCode").value = "Nenhum código PIX encontrado.";
+    campo.value = "Nenhum código PIX encontrado na URL.";
   }
 
   function copiar() {
-    const campo = document.getElementById("pixCode");
     campo.select();
     document.execCommand("copy");
-    alert("Código PIX copiado!");
+    alert("PIX copiado!");
   }
 </script>
 
