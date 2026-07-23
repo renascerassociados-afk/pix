@@ -2,7 +2,7 @@
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
-  <title>Pagamento via PIX QRCODE</title>
+  <title>Pagamento via PIX</title>
 
   <!-- 🔥 PREVIEW WHATSAPP -->
   <meta property="og:title" content="Pagamento via PIX - Águas do Renascer">
@@ -12,57 +12,85 @@
 
   <!-- QR Code -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
-</head>
-
-  <!-- QRCode -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 
   <style>
     body {
       font-family: Arial, sans-serif;
-      background: #f5f5f5;
-      text-align: center;
+      background: #f4f6f8;
+      margin: 0;
       padding: 20px;
     }
 
     .container {
+      max-width: 420px;
+      margin: 40px auto;
       background: #fff;
-      max-width: 400px;
-      margin: auto;
-      padding: 25px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.1);
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      text-align: center;
     }
 
-    /* 🔥 LOGO PEQUENA */
     .logo {
-      width: 100px;
-      height: auto;
-      display: block;
-      margin: 0 auto 15px;
+      width: 90px;
+      margin-bottom: 15px;
     }
 
-    textarea {
-      width: 100%;
-      height: 80px;
-      margin-top: 10px;
+    h1 {
+      font-size: 20px;
+      margin-bottom: 5px;
+    }
+
+    .subtitle {
+      color: #666;
+      font-size: 14px;
+      margin-bottom: 20px;
+    }
+
+    .pix-box {
+      background: #f9fafb;
+      border: 1px solid #ddd;
+      border-radius: 10px;
       padding: 10px;
       font-size: 12px;
+      margin-bottom: 15px;
+      word-break: break-all;
     }
 
     button {
-      margin-top: 10px;
-      padding: 12px;
-      width: 100%;
-      background: #00a650;
-      color: #fff;
+      background: #16a34a;
+      color: white;
       border: none;
-      border-radius: 5px;
+      padding: 14px;
+      width: 100%;
+      border-radius: 10px;
+      font-size: 16px;
       cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 5px 10px rgba(0,0,0,0.1);
     }
 
-    #qrcode {
+    button:hover {
+      background: #15803d;
+    }
+
+    button:active {
+      transform: scale(0.97);
+    }
+
+    .qr-box {
       margin-top: 20px;
+      padding: 15px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+    }
+
+    .success {
+      margin-top: 10px;
+      color: #16a34a;
+      font-size: 13px;
+      display: none;
     }
   </style>
 </head>
@@ -71,17 +99,21 @@
 
 <div class="container">
 
-  <!-- SUA LOGO -->
-  <img src="https://raw.githubusercontent.com/renascerassociados-afk/pix/refs/heads/main/logo%20sf.png" class="logo">
+  <!-- LOGO -->
+  <img src="https://raw.githubusercontent.com/renascerassociados-afk/pix/main/logo%20sf.png" class="logo">
 
-  <h2>PAGUE VIA PIX PARA ÁGUAS DO RENASCER</h2>
-  <p>Copie ou escaneie o QR Code</p>
+  <h1>Pague via PIX</h1>
+  <p class="subtitle">Águas do Renascer</p>
 
-  <textarea id="pixCode" readonly></textarea>
+  <div class="pix-box" id="pixCode">
+    Carregando código PIX...
+  </div>
 
   <button onclick="copiar()">📋 Copiar código PIX</button>
 
-  <div id="qrcode"></div>
+  <div class="success" id="msg">✔ Código PIX copiado!</div>
+
+  <div class="qr-box" id="qrcode"></div>
 
 </div>
 
@@ -90,9 +122,10 @@
   const pix = params.get("pix");
 
   const campo = document.getElementById("pixCode");
+  const msg = document.getElementById("msg");
 
   if (pix) {
-    campo.value = pix;
+    campo.innerText = pix;
 
     // 🔥 GERA QR CODE
     new QRCode(document.getElementById("qrcode"), {
@@ -102,13 +135,17 @@
     });
 
   } else {
-    campo.value = "Nenhum código PIX encontrado na URL.";
+    campo.innerText = "Nenhum código PIX encontrado na URL.";
   }
 
   function copiar() {
-    campo.select();
-    document.execCommand("copy");
-    alert("PIX copiado!");
+    navigator.clipboard.writeText(campo.innerText);
+
+    msg.style.display = "block";
+
+    setTimeout(() => {
+      msg.style.display = "none";
+    }, 2000);
   }
 </script>
 
